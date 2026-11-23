@@ -34,19 +34,74 @@
       to { transform: translateY(105vh) rotate(360deg); }
     }
 
-    /* Персонажи */
+    /* --- АНИМИРОВАННЫЕ ПЕРСОНАЖИ --- */
     .character {
       position: fixed;
-      font-size: 80px;
+      font-size: 90px;
       z-index: 10;
-      transition: transform 0.5s ease-in-out;
+      transition: transform 0.5s ease-in-out, opacity 0.5s;
       cursor: pointer;
       filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+      /* Мультяшное покачивание (idle) */
+      animation: idleBob 3s infinite ease-in-out alternate;
     }
-    .santa { left: -110px; top: 30%; }
-    .santa.peek { transform: translateX(120px) rotate(10deg); }
-    .deer { right: -110px; top: 65%; }
-    .deer.peek { transform: translateX(-120px) rotate(-10deg); }
+    
+    @keyframes idleBob {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(-10px) rotate(5deg); }
+    }
+
+    /* Дед Мороз */
+    .santa {
+      left: -120px;
+      top: 30%;
+      animation-delay: 0s;
+    }
+    /* Олень */
+    .deer {
+      right: -120px;
+      top: 65%;
+      animation-delay: 0.5s;
+    }
+
+    /* Классы для выхода (peek) */
+    .santa.peek { transform: translateX(130px) rotate(10deg); animation: none; }
+    .deer.peek { transform: translateX(-130px) rotate(-10deg); animation: none; }
+
+    /* Класс для радости (мультяшный прыжок) */
+    .jump {
+      animation: jumpAnim 1s ease-in-out infinite !important;
+    }
+    @keyframes jumpAnim {
+      0%, 100% { transform: translateX(130px) translateY(0) rotate(0deg); }
+      50% { transform: translateX(130px) translateY(-30px) rotate(15deg); }
+    }
+    .deer.jump {
+      animation: jumpAnimDeer 1s ease-in-out infinite !important;
+    }
+    @keyframes jumpAnimDeer {
+      0%, 100% { transform: translateX(-130px) translateY(0) rotate(0deg); }
+      50% { transform: translateX(-130px) translateY(-30px) rotate(-15deg); }
+    }
+
+    /* Класс для недоверия (качает головой) */
+    .shake {
+      animation: shakeAnim 0.5s ease-in-out 3 !important;
+    }
+    @keyframes shakeAnim {
+      0%, 100% { transform: translateX(130px) rotate(0deg); }
+      25% { transform: translateX(130px) rotate(-10deg); }
+      75% { transform: translateX(130px) rotate(10deg); }
+    }
+    .deer.shake {
+      animation: shakeAnimDeer 0.5s ease-in-out 3 !important;
+    }
+    @keyframes shakeAnimDeer {
+      0%, 100% { transform: translateX(-130px) rotate(0deg); }
+      25% { transform: translateX(-130px) rotate(-10deg); }
+      75% { transform: translateX(-130px) rotate(10deg); }
+    }
+
 
     .app-container {
       max-width: 900px;
@@ -104,7 +159,6 @@
     h1 { margin: 0 0 6px; font-size: 32px; text-align: center; color: #1e3a8a; text-shadow: 2px 2px 0 #dbeafe; }
     .intro { text-align: center; color: #555; margin-bottom: 20px; font-size: 16px; font-weight: bold; }
 
-    /* Блок правил */
     .grammar-box {
       background: #eff6ff;
       border: 2px dashed #60a5fa;
@@ -174,14 +228,12 @@
     .question.incorrect .q-num { background: #dc2626; box-shadow: 0 2px 0 #7f1d1d; }
     .question.unanswered .q-num { background: #d97706; box-shadow: 0 2px 0 #78350f; }
 
-    /* Ввод текста */
     .input-wrap { margin-left: 42px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .input-wrap input[type="text"] {
       padding: 12px 16px; font-size: 16px; border: 2px solid #cbd5e1; border-radius: 10px; outline: none; font-family: inherit; min-width: 220px; transition: border-color 0.2s;
     }
     .input-wrap input[type="text"]:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px #bfdbfe; }
 
-    /* Варианты ответов */
     .options { display: flex; gap: 10px; margin-left: 42px; flex-wrap: wrap; }
     .options label {
       display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px; cursor: pointer; background: #f8fafc; border: 2px solid #e2e8f0; font-size: 16px; transition: all 0.15s ease;
@@ -190,14 +242,8 @@
     .options input { accent-color: #2563eb; width: 18px; height: 18px; cursor: pointer; }
     .options label.picked { background: #dbeafe; border-color: #3b82f6; }
 
-    /* Текстовое задание */
     .text-block {
-      font-size: 17px;
-      line-height: 2.4;
-      color: #334155;
-      padding: 15px;
-      background: #f8fafc;
-      border-radius: 12px;
+      font-size: 17px; line-height: 2.4; color: #334155; padding: 15px; background: #f8fafc; border-radius: 12px;
     }
     .text-block input[type="text"] {
       padding: 4px 8px; font-size: 16px; border: none; border-bottom: 2px solid #94a3b8; background: #ffffff; outline: none; font-family: inherit; text-align: center; min-width: 100px; transition: all 0.2s;
@@ -206,18 +252,8 @@
     .text-block input.correct { border-bottom-color: #10b981; background: #ecfdf5; color: #047857; font-weight: bold; }
     .text-block input.incorrect { border-bottom-color: #ef4444; background: #fef2f2; color: #991b1b; }
 
-    /* Письмо */
     .writing-area {
-      width: 100%;
-      min-height: 200px;
-      padding: 15px;
-      font-size: 16px;
-      font-family: inherit;
-      border: 2px solid #cbd5e1;
-      border-radius: 12px;
-      outline: none;
-      resize: vertical;
-      line-height: 1.5;
+      width: 100%; min-height: 200px; padding: 15px; font-size: 16px; font-family: inherit; border: 2px solid #cbd5e1; border-radius: 12px; outline: none; resize: vertical; line-height: 1.5;
     }
     .writing-area:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px #bfdbfe; }
     .checklist { margin-top: 15px; background: #eff6ff; padding: 15px; border-radius: 12px; border: 1px solid #bfdbfe; }
@@ -256,14 +292,24 @@
       .character { font-size: 60px; }
       .santa.peek { transform: translateX(80px); }
       .deer.peek { transform: translateX(-80px); }
+      .santa.jump { animation: jumpAnimMobile 1s ease-in-out infinite !important; }
+      .deer.jump { animation: jumpAnimDeerMobile 1s ease-in-out infinite !important; }
+      @keyframes jumpAnimMobile {
+        0%, 100% { transform: translateX(80px) translateY(0) rotate(0deg); }
+        50% { transform: translateX(80px) translateY(-20px) rotate(15deg); }
+      }
+      @keyframes jumpAnimDeerMobile {
+        0%, 100% { transform: translateX(-80px) translateY(0) rotate(0deg); }
+        50% { transform: translateX(-80px) translateY(-20px) rotate(-15deg); }
+      }
     }
   </style>
 </head>
 <body>
 
   <div id="snow-container"></div>
-  <div class="character santa" id="santa" title="Дед Мороз подглядывает...">🎅</div>
-  <div class="character deer" id="deer" title="Олень смотрит за тобой!">🦌</div>
+  <div class="character santa" id="santa" title="Дед Мороз следит за тобой...">🎅</div>
+  <div class="character deer" id="deer" title="Олень смотрит!">🦌</div>
 
   <div class="app-container">
     <div class="tabs">
@@ -278,9 +324,7 @@
       <h1 id="pageTitle">New Year English Master</h1>
       <p class="intro" id="introText">Level B1/B2 Challenges ✨</p>
 
-      <div class="grammar-box" id="grammarBox">
-        <!-- Содержимое будет меняться через JS -->
-      </div>
+      <div class="grammar-box" id="grammarBox"></div>
 
       <!-- Вкладка 1: Лексика -->
       <div id="tab-content-0">
@@ -293,7 +337,7 @@
         <div id="result-0" class="result"></div>
       </div>
 
-      <!-- Вкладка 2: Грамматика (30 вопросов) -->
+      <!-- Вкладка 2: Грамматика -->
       <div id="tab-content-1" style="display:none;">
         <div class="progress-wrap"><div class="progress-bar" id="progressBar1"></div></div>
         <div id="questions-1"></div>
@@ -308,7 +352,7 @@
       <div id="tab-content-2" style="display:none;">
         <div class="progress-wrap"><div class="progress-bar" id="progressBar2"></div></div>
         <div class="question" id="story-container">
-          <p style="font-weight:bold; margin-top:0; color:#1e3a8a; font-size:18px;">📖 Read the B2 story and fill in the gaps using the correct tense (Present Perfect or Past Simple).</p>
+          <p style="font-weight:bold; margin-top:0; color:#1e3a8a; font-size:18px;">📖 Read the B2 story and fill in the gaps using the correct tense.</p>
           <div class="text-block">
             It has been an incredibly eventful New Year's Eve. My family <input type="text" id="s-0" placeholder="..."> (decide) to rent a cozy cabin in the mountains this year, a tradition we <input type="text" id="s-1" placeholder="..."> (start) back in 2018. <br><br>
             We <input type="text" id="s-2" placeholder="..."> (arrive) yesterday afternoon, and since then, it <input type="text" id="s-3" placeholder="..."> (snow) non-stop. I <input type="text" id="s-4" placeholder="..."> (never / see) such heavy snowfall in my life! <br><br>
@@ -330,15 +374,15 @@
           <p class="q-text"><span class="q-num">✍️</span> <span>Writing Task (B2 Level)</span></p>
           <p style="margin-bottom: 15px; color: #475569; font-size: 16px;">
             Write a short essay (120-150 words) about your most memorable New Year celebration. <br><br>
-            <b>Requirements:</b> Use at least <b>3 sentences in Present Perfect</b> (for experiences/results) and <b>3 sentences in Past Simple</b> (for specific details of the event). 
+            <b>Requirements:</b> Use at least <b>3 sentences in Present Perfect</b> and <b>3 sentences in Past Simple</b>. 
           </p>
           <textarea class="writing-area" id="writing-text" placeholder="Start writing your story here..."></textarea>
           
           <div class="checklist">
             <p style="margin: 0 0 10px; font-weight: bold; color: #1e3a8a;">Self-Check Checklist:</p>
             <label><input type="checkbox" id="chk-1"> I wrote 120+ words.</label>
-            <label><input type="checkbox" id="chk-2"> I used Present Perfect for experiences/results (e.g., <i>I have never seen...</i>).</label>
-            <label><input type="checkbox" id="chk-3"> I used Past Simple for specific moments (e.g., <i>We went there in 2020</i>).</label>
+            <label><input type="checkbox" id="chk-2"> I used Present Perfect for experiences/results.</label>
+            <label><input type="checkbox" id="chk-3"> I used Past Simple for specific moments.</label>
             <label><input type="checkbox" id="chk-4"> I checked my spelling and grammar.</label>
           </div>
         </div>
@@ -368,31 +412,70 @@
       snowContainer.appendChild(flake);
     }
 
-    // Персонажи
+    // --- УПРАВЛЕНИЕ ПЕРСОНАЖАМИ ---
     const santa = document.getElementById('santa');
     const deer = document.getElementById('deer');
-    function peekCharacters() {
+
+    function showSanta(emotion = '🧐', actionClass = 'shake') {
       santa.classList.add('peek');
-      santa.textContent = '🧐'; 
-      setTimeout(() => { santa.classList.remove('peek'); santa.textContent = '🎅'; }, 4000);
-      setTimeout(() => {
-        deer.classList.add('peek');
-        setTimeout(() => { deer.classList.remove('peek'); }, 4000);
-      }, 5000);
+      if (actionClass) santa.classList.add(actionClass);
+      santa.textContent = emotion;
     }
-    setInterval(peekCharacters, 12000);
-    setTimeout(peekCharacters, 2000);
+
+    function showDeer(emotion = '🦌', actionClass = '') {
+      deer.classList.add('peek');
+      if (actionClass) deer.classList.add(actionClass);
+      deer.textContent = emotion;
+    }
+
+    function hideCharacters() {
+      santa.classList.remove('peek', 'shake', 'jump');
+      santa.textContent = '🎅';
+      deer.classList.remove('peek', 'shake', 'jump');
+      deer.textContent = '🦌';
+    }
+
+    // Фоновая проверка (каждые 15 секунд)
+    let idleInterval = setInterval(() => {
+      // Дед Мороз выглядывает с недоверием
+      showSanta('🧐', 'shake');
+      setTimeout(() => { santa.classList.remove('peek', 'shake'); santa.textContent = '🎅'; }, 4000);
+      
+      // Олень выглядывает через 5 секунд
+      setTimeout(() => {
+        showDeer('🦌', '');
+        setTimeout(() => { deer.classList.remove('peek'); deer.textContent = '🦌'; }, 4000);
+      }, 5000);
+    }, 15000);
+
+    // Триггер радости (при хороших результатах)
+    function triggerHappiness() {
+      clearInterval(idleInterval); // Пауза фоновой анимации
+      hideCharacters();
+      
+      setTimeout(() => {
+        showSanta('🥳', 'jump');
+        showDeer('🦌', 'jump');
+        
+        setTimeout(() => {
+          hideCharacters();
+          // Возобновляем фон
+          idleInterval = setInterval(() => {
+            showSanta('🧐', 'shake');
+            setTimeout(() => { santa.classList.remove('peek', 'shake'); santa.textContent = '🎅'; }, 4000);
+            setTimeout(() => {
+              showDeer('🦌', '');
+              setTimeout(() => { deer.classList.remove('peek'); deer.textContent = '🦌'; }, 4000);
+            }, 5000);
+          }, 15000);
+        }, 3000);
+      }, 500);
+    }
 
     // --- ВКЛАДКИ ---
     function switchTab(index) {
-      for(let i=0; i<4; i++) {
-        document.getElementById(`tab-content-${i}`).style.display = index === i ? 'block' : 'none';
-      }
-      const tabs = document.querySelectorAll('.tab-btn');
-      tabs.forEach((tab, i) => {
-        if (i === index) tab.classList.add('active');
-        else tab.classList.remove('active');
-      });
+      for(let i=0; i<4; i++) document.getElementById(`tab-content-${i}`).style.display = index === i ? 'block' : 'none';
+      document.querySelectorAll('.tab-btn').forEach((tab, i) => tab.classList.toggle('active', i === index));
 
       const title = document.getElementById('pageTitle');
       const intro = document.getElementById('introText');
@@ -404,17 +487,16 @@
         gBox.style.display = 'block';
         gBox.innerHTML = `<h3>📖 Vocabulary Reminder</h3>
           <p><b>Movement:</b> <i>under, along, round, through, into, across, over, up, past, towards, down, out of</i>.</p>
-          <p><b>Phrasal Verbs:</b> Look at the context! E.g., <i>turn on/off</i> (devices), <i>pick up</i> (from floor), <i>give up</i> (stop doing). Note: Pronouns go in the middle (Turn it off, not Turn off it).</p>`;
+          <p><b>Phrasal Verbs:</b> Note pronoun placement: <i>Turn it off</i> (not Turn off it).</p>`;
       } else if (index === 1) {
         title.textContent = "Grammar Master B1/B2";
         intro.textContent = "30 Challenging Questions: Present Perfect vs Past Simple";
         gBox.style.display = 'block';
         gBox.innerHTML = `<h3>📖 Advanced Grammar Reminder</h3>
           <ul>
-            <li><b>Present Perfect:</b> Focuses on the <b>result now</b> or <b>life experience</b> (no specific time). <br><i>e.g., I have lost my keys (I don't have them now).</i></li>
-            <li><b>Past Simple:</b> Focuses on a <b>completed action</b> at a <b>specific time</b> in the past. <br><i>e.g., I lost my keys yesterday (specific time).</i></li>
-            <li><b>B2 Nuance:</b> "Have you ever been to..." (experience). "When did you go...?" (specific details).</li>
-            <li><b>Tricky Words:</b> <i>Just, already, yet, since, for</i> (Present Perfect). <i>Ago, last week, in 2010, when</i> (Past Simple).</li>
+            <li><b>Present Perfect:</b> Result now or life experience. <br><i>I have lost my keys.</i></li>
+            <li><b>Past Simple:</b> Specific finished time. <br><i>I lost my keys yesterday.</i></li>
+            <li><b>B2 Nuance:</b> "Have you ever been to..." vs "When did you go...?"</li>
           </ul>`;
       } else if (index === 2) {
         title.textContent = "New Year Story (B2)";
@@ -427,23 +509,22 @@
       }
     }
 
-    // --- ЛОГИКА VOCABULARY (Part 1) ---
+    // --- ЛОГИКА VOCABULARY ---
     const vocabQuestions = [
-      { type: "options", q: "The dog ran ________ the bridge to the other side.", options: ["across", "through", "towards"], answer: 0, explanation: { 1: "❌ 'Through' means inside something (like a tunnel).", 2: "❌ 'Towards' means in the direction of, not crossing it." } },
-      { type: "options", q: "We walked ________ the lake, enjoying the view.", options: ["across", "round", "into"], answer: 1, explanation: { 0: "❌ 'Across' means from one side to the other in a straight line.", 2: "❌ 'Into' means entering something." } },
-      { type: "options", q: "He walked ________ the shop to buy some milk.", options: ["out of", "into", "past"], answer: 1, explanation: { 0: "❌ 'Out of' is exiting, but he is going to buy milk, so he enters.", 2: "❌ 'Past' means walking by it without stopping." } },
-      { type: "options", q: "The cat jumped ________ the wall and escaped.", options: ["over", "under", "along"], answer: 0, explanation: { 1: "❌ 'Under' means below the wall.", 2: "❌ 'Along' means next to the wall." } },
-      { type: "options", q: "I need to ________ smoking. It's bad for my health.", options: ["give up", "put away", "turn off"], answer: 0, explanation: { 1: "❌ 'Put away' is for objects.", 2: "❌ 'Turn off' is for machines." } },
+      { type: "options", q: "The dog ran ________ the bridge to the other side.", options: ["across", "through", "towards"], answer: 0, explanation: { 1: "❌ 'Through' means inside something.", 2: "❌ 'Towards' means in the direction of." } },
+      { type: "options", q: "We walked ________ the lake, enjoying the view.", options: ["across", "round", "into"], answer: 1, explanation: { 0: "❌ 'Across' means in a straight line.", 2: "❌ 'Into' means entering." } },
+      { type: "options", q: "He walked ________ the shop to buy some milk.", options: ["out of", "into", "past"], answer: 1, explanation: { 0: "❌ 'Out of' is exiting.", 2: "❌ 'Past' means walking by." } },
+      { type: "options", q: "The cat jumped ________ the wall and escaped.", options: ["over", "under", "along"], answer: 0, explanation: { 1: "❌ 'Under' means below.", 2: "❌ 'Along' means next to." } },
+      { type: "options", q: "I need to ________ smoking.", options: ["give up", "put away", "turn off"], answer: 0, explanation: { 1: "❌ 'Put away' is for objects.", 2: "❌ 'Turn off' is for machines." } },
       { type: "options", q: "Don't forget to ________ the TV before you go to bed.", options: ["turn off", "pick up", "look for"], answer: 0, explanation: { 1: "❌ 'Pick up' means lift.", 2: "❌ 'Look for' means search." } },
-      { type: "options", q: "I don't know this word. I will ________ it ________ in the dictionary.", options: ["look / up", "find / out", "give / back"], answer: 0, explanation: { 1: "❌ 'Find out' means discover information.", 2: "❌ 'Give back' means return an object." } },
+      { type: "options", q: "I don't know this word. I will ________ it ________.", options: ["look / up", "find / out", "give / back"], answer: 0, explanation: { 1: "❌ 'Find out' means discover information.", 2: "❌ 'Give back' means return." } },
       { type: "options", q: "Please ________ your toys ________ before dinner.", options: ["put / away", "turn / on", "get / on"], answer: 0, explanation: { 1: "❌ 'Turn on' is for devices.", 2: "❌ 'Get on' is for transport." } },
-      { type: "options", q: "She ________ the box of decorations ________ from the attic.", options: ["took / down", "got / off", "looked / after"], answer: 0, explanation: { 1: "❌ 'Got off' is for transport.", 2: "❌ 'Look after' means take care of." } },
-      { type: "options", q: "The thief ran ________ from the police.", options: ["away", "back", "up"], answer: 0, explanation: { 1: "❌ 'Back' means return.", 2: "❌ 'Up' is the wrong direction here." } }
+      { type: "options", q: "She ________ the box ________ from the attic.", options: ["took / down", "got / off", "looked / after"], answer: 0, explanation: { 1: "❌ 'Got off' is for transport.", 2: "❌ 'Look after' means take care of." } },
+      { type: "options", q: "The thief ran ________ from the police.", options: ["away", "back", "up"], answer: 0, explanation: { 1: "❌ 'Back' means return.", 2: "❌ 'Up' is the wrong direction." } }
     ];
 
     function initVocabTab() {
-      const qContainer = document.getElementById("questions-0");
-      qContainer.innerHTML = vocabQuestions.map((item, i) => {
+      document.getElementById("questions-0").innerHTML = vocabQuestions.map((item, i) => {
         let bodyHtml = `<div class="options">${item.options.map((opt, j) => `<label><input type="radio" name="v${i}" value="${j}"><span>${opt}</span></label>`).join("")}</div>`;
         return `<div class="question" id="v${i}"><p class="q-text"><span class="q-num">${i + 1}</span><span>${item.q}</span></p>${bodyHtml}<div class="feedback" id="v-feedback-${i}"></div></div>`;
       }).join("");
@@ -454,6 +535,8 @@
           document.querySelectorAll(`#questions-0 input[name="${name}"]`).forEach(inp => inp.closest('label').classList.remove('picked'));
           label.classList.add('picked');
           updateProgress(0);
+          // Реакция на выбор: легкое покачивание
+          if (Math.random() > 0.5) showSanta('🧐', 'shake');
         });
       });
     }
@@ -482,59 +565,48 @@
       const resultEl = document.getElementById("result-0");
       resultEl.innerHTML = `Score: ${score} / ${vocabQuestions.length}`;
       resultEl.className = "result " + (score === vocabQuestions.length ? "good" : (score > 5 ? "mid" : "bad"));
+      
+      if (score >= 8) triggerHappiness();
     });
 
     document.getElementById("resetBtn0").addEventListener("click", () => { initVocabTab(); document.getElementById("result-0").innerHTML = ""; document.getElementById("progressBar0").style.width = "0%"; });
 
-
-    // --- ЛОГИКА GRAMMAR (Part 2 - 30 Questions) ---
+    // --- ЛОГИКА GRAMMAR ---
     const grammarQuestions = [
-      // 1-5 Basic Traps
-      { type: "options", q: "1. I ________ my keys. I can't open the door.", options: ["lost", "have lost", "didn't lose"], answer: 1, explanation: { 0: "❌ Past Simple 'lost' means the action is fully over in the past. But the result (you don't have keys now) is important.", 2: "❌ This is negative, but the sentence is positive." } },
-      { type: "options", q: "2. We ________ to Paris in 2020.", options: ["have been", "went", "have gone"], answer: 1, explanation: { 0: "❌ 'In 2020' is a specific finished time. Use Past Simple.", 2: "❌ 'Have gone' means they are still there. 'In 2020' requires Past Simple." } },
-      { type: "options", q: "3. ________ you ever ________ sushi?", options: ["Did / eat", "Have / eaten", "Have / eat"], answer: 1, explanation: { 0: "❌ 'Ever' for life experience requires Present Perfect.", 2: "❌ 'Have' needs the V3 (eaten), not the base form." } },
-      { type: "text", q: "4. A: Has he finished his work yet?\nB: Yes, he ________ (finish) it an hour ago.", answer: ["finished"], explanation: { "wrong": "❌ 'An hour ago' is a specific finished time in the past. Must use Past Simple." } },
-      { type: "options", q: "5. She has never ________ to London.", options: ["been", "went", "be"], answer: 0, explanation: { 1: "❌ 'Went' is Past Simple. After 'has', we need V3.", 2: "❌ 'Be' is the base form. V3 is 'been'." } },
-      
-      // 6-10: Yet, Just, Already, Since, For
-      { type: "options", q: "6. I ________ my homework. Can I go out to play?", options: ["already finished", "have just finished", "finished just"], answer: 1, explanation: { 0: "❌ Word order: 'already' goes between have and the verb.", 2: "❌ Word order is wrong. Also, 'just' goes with Present Perfect here." } },
-      { type: "text", q: "7. ________ you ________ (buy) a Christmas tree for the living room yet?", answer: ["have bought", "have you bought"], explanation: { "wrong": "❌ Structure: Have + subject + Past Participle. 'Yet' at the end is a clue for Present Perfect." } },
-      { type: "options", q: "8. When ________ you ________ this movie?", options: ["have / seen", "did / see", "did / saw"], answer: 1, explanation: { 0: "❌ You cannot use 'When' with Present Perfect.", 2: "❌ After 'did', use the base form (see), not V2 (saw)." } },
-      { type: "options", q: "9. I have known my best friend ________ ten years.", options: ["since", "for", "from"], answer: 1, explanation: { 0: "❌ 'Since' is used with a point in time (since 2010).", 2: "❌ 'From' is not used to express duration here." } },
-      { type: "options", q: "10. We have lived here ________ 2015.", options: ["since", "for", "ago"], answer: 0, explanation: { 1: "❌ 'For' is used with a period (for 10 years).", 2: "❌ 'Ago' goes with Past Simple (10 years ago)." } },
-
-      // 11-15: B1/B2 Nuances
-      { type: "text", q: "11. A: Have you ever been to the mountains?\nB: Yes, I ________ (go) there last winter.", answer: ["went"], explanation: { "wrong": "❌ 'Last winter' is a specific time. Use Past Simple." } },
-      { type: "options", q: "12. They ________ arrived yet. We are still waiting.", options: ["haven't", "didn't", "don't"], answer: 0, explanation: { 1: "❌ 'Didn't' is Past Simple. 'Yet' requires Present Perfect.", 2: "❌ 'Don't' is Present Simple." } },
-      { type: "text", q: "13. Write the Past Participle of 'write': ________", answer: ["written"], explanation: { "wrong": "❌ Past Simple is 'wrote', Past Participle is 'written'." } },
-      { type: "options", q: "14. He ________ his leg, so he can't walk.", options: ["broke", "has broken", "breaks"], answer: 1, explanation: { 0: "❌ 'Broke' is Past Simple. When the result is visible now (can't walk), we prefer Present Perfect.", 2: "❌ 'Breaks' is Present Simple." } },
-      { type: "text", q: "15. Answer the question:\nA: Did you do your homework?\nB: Yes, I ________ it before dinner.", answer: ["did", "finished"], explanation: { "wrong": "❌ The question is Past Simple ('Did you...?'). We usually answer in Past Simple." } },
-
-      // 16-20: Advanced Contexts
-      { type: "options", q: "16. I haven't seen that movie ________.", options: ["already", "yet", "ever"], answer: 1, explanation: { 0: "❌ 'Already' is used in positive sentences.", 2: "❌ 'Ever' is used in questions." } },
-      { type: "options", q: "17. How long ________ you ________ your bike?", options: ["did / have", "have / had", "do / have"], answer: 1, explanation: { 0: "❌ 'Did' is Past Simple, doesn't fit duration up to now.", 2: "❌ 'Do' is Present Simple." } },
-      { type: "options", q: "18. She ________ a cold since Monday.", options: ["had", "has had", "have"], answer: 1, explanation: { 0: "❌ 'Had' is Past Simple. The cold started Monday and continues now.", 2: "❌ 'Have' doesn't match 'She'." } },
-      { type: "text", q: "19. A: Where is your brother?\nB: He ________ (go) to the shop. He'll be back soon.", answer: ["has gone"], explanation: { "wrong": "❌ He is still at the shop. We use 'have/has gone' to mean someone went and hasn't returned yet." } },
-      { type: "text", q: "20. A: Where have you been?\nB: I ________ (be) to the shop. Look, I bought milk!", answer: ["have been"], explanation: { "wrong": "❌ You went and came back. We use 'have/has been' to describe a completed round trip." } },
-
-      // 21-25: Tricky Sentence Structures
-      { type: "options", q: "21. It is the first time I ________ this song.", options: ["heard", "have heard", "hear"], answer: 1, explanation: { 0: "❌ In structures like 'It's the first time...', we use Present Perfect.", 2: "❌ 'Hear' is Present Simple." } },
-      { type: "options", q: "22. This is the best cake I ________ ever ________.", options: ["have / tasted", "did / taste", "had / tasted"], answer: 0, explanation: { 1: "❌ We use Present Perfect after superlatives (the best... I have ever...).", 2: "❌ Past Perfect is too far back in time." } },
-      { type: "text", q: "23. The train ________ (just / leave). You missed it by a minute!", answer: ["has just left"], explanation: { "wrong": "❌ 'Just' means a very short time ago. Action has a result now (you missed it). Use Present Perfect." } },
-      { type: "options", q: "24. I ________ to the gym three times this week.", options: ["went", "have been", "was"], answer: 1, explanation: { 0: "❌ 'This week' is an unfinished time period, so we use Present Perfect.", 2: "❌ 'Was' is Past Simple." } },
-      { type: "text", q: "25. Complete with Past Simple or Present Perfect:\nHe ________ (live) in London for 5 years, but now he lives in Paris.", answer: ["lived"], explanation: { "wrong": "❌ The action is finished (he doesn't live there now). Use Past Simple. (If he still lived there, we would use 'has lived')." } },
-
-      // 26-30: B2 Advanced Nuances
-      { type: "options", q: "26. Since we ________ this house, we have painted it twice.", options: ["bought", "have bought", "buy"], answer: 0, explanation: { 1: "❌ The starting point ('Since...') is in the past, so it takes Past Simple.", 2: "❌ 'Buy' is Present Simple." } },
-      { type: "text", q: "27. It ________ (rain) heavily since yesterday morning.", answer: ["has rained", "has been raining"], explanation: { "wrong": "❌ The action started in the past and continues to the present. Use Present Perfect (Continuous)." } },
-      { type: "options", q: "28. She ________ in London for five years before she moved to Paris.", options: ["has lived", "lived", "was living"], answer: 1, explanation: { 0: "❌ 'Has lived' connects to now, but she doesn't live there anymore.", 2: "❌ 'Was living' is Past Continuous, not ideal here without more context." } },
-      { type: "options", q: "29. I ________ (not/see) him since we ________ (argue).", options: ["haven't seen / argued", "didn't see / argued", "haven't seen / have argued"], answer: 0, explanation: { 1: "❌ The first part connects to now (I still haven't seen him), so it needs Present Perfect.", 2: "❌ 'Since' usually introduces a Past Simple clause." } },
-      { type: "options", q: "30. When ________ you ________ the news?", options: ["have / heard", "did / hear", "did / heard"], answer: 1, explanation: { 0: "❌ 'When' asks for a specific time, so use Past Simple.", 2: "❌ After 'did', use the base form (hear)." } }
+      { type: "options", q: "1. I ________ my keys. I can't open the door.", options: ["lost", "have lost", "didn't lose"], answer: 1, explanation: { 0: "❌ Past Simple 'lost' means the action is fully over.", 2: "❌ This is negative." } },
+      { type: "options", q: "2. We ________ to Paris in 2020.", options: ["have been", "went", "have gone"], answer: 1, explanation: { 0: "❌ 'In 2020' is a specific time.", 2: "❌ 'Have gone' means still there." } },
+      { type: "options", q: "3. ________ you ever ________ sushi?", options: ["Did / eat", "Have / eaten", "Have / eat"], answer: 1, explanation: { 0: "❌ 'Ever' requires Present Perfect.", 2: "❌ Needs V3." } },
+      { type: "text", q: "4. A: Has he finished his work yet?\nB: Yes, he ________ (finish) it an hour ago.", answer: ["finished"], explanation: { "wrong": "❌ 'An hour ago' is a finished time. Must use Past Simple." } },
+      { type: "options", q: "5. She has never ________ to London.", options: ["been", "went", "be"], answer: 0, explanation: { 1: "❌ 'Went' is Past Simple.", 2: "❌ 'Be' is base form." } },
+      { type: "options", q: "6. I ________ my homework. Can I go out to play?", options: ["already finished", "have just finished", "finished just"], answer: 1, explanation: { 0: "❌ Word order: 'already' goes between have and verb.", 2: "❌ Word order is wrong." } },
+      { type: "text", q: "7. ________ you ________ (buy) a Christmas tree for the living room yet?", answer: ["have bought", "have you bought"], explanation: { "wrong": "❌ Structure: Have + subject + Past Participle." } },
+      { type: "options", q: "8. When ________ you ________ this movie?", options: ["have / seen", "did / see", "did / saw"], answer: 1, explanation: { 0: "❌ Cannot use 'When' with Present Perfect.", 2: "❌ After 'did', use base form." } },
+      { type: "options", q: "9. I have known my best friend ________ ten years.", options: ["since", "for", "from"], answer: 1, explanation: { 0: "❌ 'Since' is a point in time.", 2: "❌ 'From' is not used." } },
+      { type: "options", q: "10. We have lived here ________ 2015.", options: ["since", "for", "ago"], answer: 0, explanation: { 1: "❌ 'For' is a period.", 2: "❌ 'Ago' goes with Past Simple." } },
+      { type: "text", q: "11. A: Have you ever been to the mountains?\nB: Yes, I ________ (go) there last winter.", answer: ["went"], explanation: { "wrong": "❌ 'Last winter' is a specific time." } },
+      { type: "options", q: "12. They ________ arrived yet.", options: ["haven't", "didn't", "don't"], answer: 0, explanation: { 1: "❌ 'Yet' requires Present Perfect.", 2: "❌ 'Don't' is Present Simple." } },
+      { type: "text", q: "13. Write the Past Participle of 'write': ________", answer: ["written"], explanation: { "wrong": "❌ Past Simple is 'wrote'." } },
+      { type: "options", q: "14. He ________ his leg, so he can't walk.", options: ["broke", "has broken", "breaks"], answer: 1, explanation: { 0: "❌ 'Broke' is Past Simple. Result is visible now.", 2: "❌ 'Breaks' is Present Simple." } },
+      { type: "text", q: "15. A: Did you do your homework?\nB: Yes, I ________ it before dinner.", answer: ["did", "finished"], explanation: { "wrong": "❌ The question is Past Simple." } },
+      { type: "options", q: "16. I haven't seen that movie ________.", options: ["already", "yet", "ever"], answer: 1, explanation: { 0: "❌ 'Already' is for positive sentences.", 2: "❌ 'Ever' is for questions." } },
+      { type: "options", q: "17. How long ________ you ________ your bike?", options: ["did / have", "have / had", "do / have"], answer: 1, explanation: { 0: "❌ 'Did' doesn't fit duration to now.", 2: "❌ 'Do' is Present Simple." } },
+      { type: "options", q: "18. She ________ a cold since Monday.", options: ["had", "has had", "have"], answer: 1, explanation: { 0: "❌ 'Had' is Past Simple.", 2: "❌ 'Have' doesn't match 'She'." } },
+      { type: "text", q: "19. A: Where is your brother?\nB: He ________ (go) to the shop. He'll be back soon.", answer: ["has gone"], explanation: { "wrong": "❌ He is still there." } },
+      { type: "text", q: "20. A: Where have you been?\nB: I ________ (be) to the shop. Look, I bought milk!", answer: ["have been"], explanation: { "wrong": "❌ Completed round trip." } },
+      { type: "options", q: "21. It is the first time I ________ this song.", options: ["heard", "have heard", "hear"], answer: 1, explanation: { 0: "❌ 'It's the first time' requires Present Perfect.", 2: "❌ 'Hear' is Present Simple." } },
+      { type: "options", q: "22. This is the best cake I ________ ever ________.", options: ["have / tasted", "did / taste", "had / tasted"], answer: 0, explanation: { 1: "❌ Use Present Perfect after superlatives.", 2: "❌ Past Perfect." } },
+      { type: "text", q: "23. The train ________ (just / leave). You missed it!", answer: ["has just left"], explanation: { "wrong": "❌ 'Just' means a short time ago." } },
+      { type: "options", q: "24. I ________ to the gym three times this week.", options: ["went", "have been", "was"], answer: 1, explanation: { 0: "❌ 'This week' is unfinished.", 2: "❌ 'Was' is Past Simple." } },
+      { type: "text", q: "25. He ________ (live) in London for 5 years, but now he lives in Paris.", answer: ["lived"], explanation: { "wrong": "❌ Action is finished. Use Past Simple." } },
+      { type: "options", q: "26. Since we ________ this house, we have painted it twice.", options: ["bought", "have bought", "buy"], answer: 0, explanation: { 1: "❌ 'Since...' takes Past Simple.", 2: "❌ 'Buy' is Present Simple." } },
+      { type: "text", q: "27. It ________ (rain) heavily since yesterday morning.", answer: ["has rained", "has been raining"], explanation: { "wrong": "❌ Action continues to present." } },
+      { type: "options", q: "28. She ________ in London for five years before she moved.", options: ["has lived", "lived", "was living"], answer: 1, explanation: { 0: "❌ Action is finished.", 2: "❌ Past Continuous." } },
+      { type: "options", q: "29. I ________ (not/see) him since we ________ (argue).", options: ["haven't seen / argued", "didn't see / argued", "haven't seen / have argued"], answer: 0, explanation: { 1: "❌ First part connects to now.", 2: "❌ 'Since' takes Past Simple." } },
+      { type: "options", q: "30. When ________ you ________ the news?", options: ["have / heard", "did / hear", "did / heard"], answer: 1, explanation: { 0: "❌ 'When' asks for specific time.", 2: "❌ After 'did', use base form." } }
     ];
 
     function initGrammarTab() {
-      const qContainer = document.getElementById("questions-1");
-      qContainer.innerHTML = grammarQuestions.map((item, i) => {
+      document.getElementById("questions-1").innerHTML = grammarQuestions.map((item, i) => {
         let bodyHtml = item.type === "options" 
           ? `<div class="options">${item.options.map((opt, j) => `<label><input type="radio" name="g${i}" value="${j}"><span>${opt}</span></label>`).join("")}</div>`
           : `<div class="input-wrap"><input type="text" id="input-g${i}" placeholder="Type your answer..." autocomplete="off"></div>`;
@@ -547,6 +619,7 @@
           document.querySelectorAll(`#questions-1 input[name="${name}"]`).forEach(inp => inp.closest('label').classList.remove('picked'));
           label.classList.add('picked');
           updateProgress(1);
+          if (Math.random() > 0.5) showSanta('🧐', 'shake');
         });
       });
       grammarQuestions.forEach((item, i) => {
@@ -577,7 +650,7 @@
         } else {
           const input = document.getElementById(`input-g${i}`);
           const val = input.value.trim();
-          if (val === "") { block.classList.add("unanswered"); feedback.innerHTML = `❄️ You left this empty! Correct: <b>${item.answer[0]}</b>`; return; }
+          if (val === "") { block.classList.add("unanswered"); feedback.innerHTML = `❄️ Empty! Correct: <b>${item.answer[0]}</b>`; return; }
           const isCorrect = item.answer.some(ans => val.toLowerCase() === ans.toLowerCase());
           if (isCorrect) {
             score++; block.classList.add("correct"); feedback.innerHTML = "🎉 Perfect!"; feedback.classList.add("ok");
@@ -592,15 +665,14 @@
       const resultEl = document.getElementById("result-1");
       resultEl.innerHTML = `Score: ${score} / ${grammarQuestions.length}`;
       resultEl.className = "result " + (score === grammarQuestions.length ? "good" : (score > 15 ? "mid" : "bad"));
+      if (score >= 25) triggerHappiness();
     });
 
     document.getElementById("resetBtn1").addEventListener("click", () => { initGrammarTab(); document.getElementById("result-1").innerHTML = ""; document.getElementById("progressBar1").style.width = "0%"; });
 
-
-    // --- ЛОГИКА STORY (Part 3 - B2 Text) ---
+    // --- ЛОГИКА STORY ---
     const storyAnswers = ["decided", "started", "arrived", "has been snowing", "have never seen", "broke", "has already apologized", "haven't decorated", "have just found", "bought", "has been", "have ever had"];
     
-    // Для проверки текста (чтобы подсвечивать инпуты)
     function checkStory() {
       let score = 0, unanswered = 0;
       let feedbackEl = document.getElementById("feedback-story");
@@ -610,7 +682,6 @@
         input.classList.remove('correct', 'incorrect');
         if (val === "") { unanswered++; return; }
         let isCorrect = val === ans.toLowerCase();
-        // Разрешаем варианты для has been snowing / has snowed
         if (i === 3 && (val === "has snowed" || val === "has been snowing")) isCorrect = true; 
         if (isCorrect) { score++; input.classList.add('correct'); } 
         else { input.classList.add('incorrect'); }
@@ -626,6 +697,8 @@
       const resultEl = document.getElementById("result-2");
       resultEl.innerHTML = `Score: ${score} / ${storyAnswers.length}`;
       resultEl.className = "result " + (score === storyAnswers.length ? "good" : (score > 7 ? "mid" : "bad"));
+      
+      if (score >= 9) triggerHappiness();
     }
 
     document.getElementById("checkBtn2").addEventListener("click", checkStory);
@@ -637,7 +710,6 @@
       document.getElementById("progressBar2").style.width = "0%";
     });
 
-    // Обновление прогресса для текста
     storyAnswers.forEach((_, i) => {
       document.getElementById(`s-${i}`).addEventListener('input', () => {
          let ans = 0;
@@ -646,8 +718,7 @@
       });
     });
 
-
-    // --- ЛОГИКА WRITING (Part 4) ---
+    // --- ЛОГИКА WRITING ---
     document.getElementById("checkBtn3").addEventListener("click", () => {
       const text = document.getElementById("writing-text").value.trim();
       const words = text === "" ? [] : text.split(/\s+/);
@@ -658,19 +729,19 @@
       const chk3 = document.getElementById("chk-3").checked;
       const chk4 = document.getElementById("chk-4").checked;
 
-      let resultHTML = "";
-      let resultClass = "result";
       let msg = "";
+      let resultClass = "result";
 
       if (wordCount < 120) {
         msg = `📝 Your essay is too short (${wordCount} words). Please write at least 120 words.`;
         resultClass += " bad";
       } else if (!chk1 || !chk2 || !chk3 || !chk4) {
-        msg = `👀 Please make sure all checkboxes are ticked! You need to review your grammar and length.`;
+        msg = `👀 Please make sure all checkboxes are ticked!`;
         resultClass += " mid";
       } else {
-        msg = `🎉 Excellent! Your essay is ${wordCount} words long, and you completed the self-check. Great job!`;
+        msg = `🎉 Excellent! Your essay is ${wordCount} words long. Great job!`;
         resultClass += " good";
+        triggerHappiness();
       }
 
       const resultEl = document.getElementById("result-3");
@@ -685,8 +756,6 @@
       document.getElementById("result-3").className = "result";
     });
 
-
-    // --- ОБЩЕЕ ОБНОВЛЕНИЕ ПРОГРЕССА ---
     function updateProgress(tabIndex) {
       let answered = 0;
       if (tabIndex === 0) {
@@ -703,7 +772,6 @@
       }
     }
 
-    // Инициализация при загрузке
     initVocabTab();
     initGrammarTab();
   </script>
